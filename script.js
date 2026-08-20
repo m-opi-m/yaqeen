@@ -73,3 +73,31 @@
     revealAll();
   }
 })();
+
+// ── screenshot lightbox: click any app screenshot to view full size ─────────────────────
+(function lightbox(){
+  const box = document.getElementById('lightbox');
+  const img = document.getElementById('lightboxImg');
+  const closeBtn = document.getElementById('lightboxClose');
+  if(!box || !img || !closeBtn) return;
+
+  const shots = document.querySelectorAll('.phone img, .shot img');
+
+  function open(src, alt){
+    img.src = src;
+    img.alt = alt || '';
+    box.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    box.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  shots.forEach(el => {
+    el.addEventListener('click', () => open(el.src, el.alt));
+  });
+  closeBtn.addEventListener('click', close);
+  box.addEventListener('click', (e) => { if(e.target === box) close(); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') close(); });
+})();
